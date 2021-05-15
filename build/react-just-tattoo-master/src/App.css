@@ -1,5 +1,5 @@
 .app-section {
-    padding: 30px;
+    padding: 20px;
 }
 
 .app-container {
@@ -12,5 +12,5 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 16px;
-    row-gap:16px;
+    row-gap: 16px;
 }

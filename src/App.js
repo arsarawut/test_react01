@@ -1,29 +1,46 @@
+import { useState } from 'react';
 import "./App.css";
+import AppHeader from './components/AppHeader';
+import TattooItem from "./components/TattooItem";
+import TattooPost from "./components/TattooPost";
+import tattoos from "./data/tattoos";
+import AppSearch from "./components/AppSearch";
 
 function App() {
+  const [selectedTattoo, setSelectedTattoo] = useState(null);
+  const [searchText, setSearchText] = useState('');
+
+  function onTattooOpenClick(theTattoo) {
+    setSelectedTattoo(theTattoo);
+  }
+
+  function onTattooCloseClick() {
+    setSelectedTattoo(null);
+  }
+
+  const tattooElements = tattoos.filter((tattoo) => {
+    return tattoo.title.includes(searchText);
+  }).map((tattoo, index) => {
+    return <TattooItem key={index} tattoo={tattoo} onTattooClick={onTattooOpenClick} />
+  });
+
+
+  let tattooPost = null;
+  if (!!selectedTattoo) {
+    tattooPost = <TattooPost tattoo={selectedTattoo} onBgClick={onTattooCloseClick} />
+  }
   return (
     <div className="app">
-        <header className="app-header">
-            <img className="app-header-logo" src="/images/logo.png"/>
-        </header>
-        <div className="app-grid">
-            <div className="tattoo-item">
-                <img src="/images/tattoo-01-small.jpg" />
-                <h4>ต่ายน้อย 2</h4>
+        <AppHeader />
+        <section className="app-section">
+          <div className="app-container">
+            <AppSearch value={searchText} onValueChange={setSearchText} />
+            <div className="app-grid">
+                {tattooElements}
             </div>
-            <div className="tattoo-item">
-                <img src="/images/tattoo-02-small.jpg" />
-                <h4>ต่ายน้อย 2</h4>
-            </div>
-            <div className="tattoo-item">
-                <img src="/images/tattoo-03-small.jpg" />
-                <h4>ต่ายน้อย 2</h4>
-            </div>
-            <div className="tattoo-item">
-                <img src="/images/tattoo-04-small.jpg" />
-                <h4>ต่ายน้อย 2</h4>
-            </div>
-        </div>
+          </div>
+        </section>
+        {tattooPost}
     </div>
   );
 }
